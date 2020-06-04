@@ -1,0 +1,162 @@
+{% load adminlte_helpers i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title_outer %}
+        <title>{% block title %}{{ site.name }}{% endblock %}</title>
+    {% endblock %}
+
+    {% block meta %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    {% endblock %}
+
+    {% block stylesheets %}
+        {% include 'adminlte/lib/_styles.html' %}
+    {% endblock %}
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="hold-transition sidebar-mini {% block body_class %}{% block bodyclass %}{% endblock %}{% endblock %}">
+
+{% block body %}
+    <div class="wrapper">
+        {% block nav_header %}
+            {% include 'adminlte/lib/_main_header.html' %}
+        {% endblock %}
+
+        {% block nav_sidebar %}
+            {% include 'adminlte/lib/_main_sidebar.html' %}
+        {% endblock %}
+
+        {% block content_wrapper %}
+        <div class="content-wrapper">
+            {% block content_header %}
+                <section class="content-header">
+                    {% block no_heading %}
+                        <h1>
+                            {% block page_name %}{% endblock %}
+                            <div class="header-actions">
+                                {% block page_actions %}{% endblock %}
+                            </div>
+                            {% block no_description %}
+                            <small>
+                                {% block page_description %}
+                                    <table>
+                                    <tbody>
+                                    <tr>
+                                    <td style="padding: 20px; background: rgb(240, 240, 240);border-radius: 10px;">
+                                    <form method="post" >
+                                    
+                                    {% csrf_token %}
+                                    
+                                    <div style="margin: 0 0 30px 0"> Отправка Пуш-уведомлений </div>
+                                    {% for field in form %}
+                                        <div class="fieldWrapper">
+                                            {{ field.errors }}
+                                            <div style="font-size: 18px">{{ field.label_tag }} </div>
+                                            <div>{{ field }}</div>
+                                            {% if field.help_text %}
+                                            <p class="help">{{ field.help_text|safe }}</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+
+
+                                    <button type="submit" class="btn btn-default" style="margin: 20px 0 0 0">Отправить</button>
+                                    </form>
+
+
+                                    </td>
+                                    <td style="padding: 20px; width: 300px; background: rgb(210, 210, 210);border-radius: 10px;">
+                                        <div style="text-align: center"> Android </div>
+                                        <div class="container" style="position: relative;">
+                                          <img src="{%static "img/android.png" %}" alt="Snow" style="width:300px; border-radius: 10px">
+                                          <div style="position: absolute;top: 77%;left: 50%;transform: translate(-50%, -50%);"><input type='text' style="background: transparent; width: 250px; border: none; font-size: 12px; color:white" id='output_android' disabled></div>
+                                        </div>
+
+                                        <div style="text-align: center"> Iphone </div>
+                                        <div class="container" style="position: relative;">
+                                          <img src="{%static "img/iphone.png" %}" alt="Snow" style="width:300px;border-radius: 10px">
+                                          <div style="position: absolute;top: 85%;left: 50%;transform: translate(-50%, -50%);"><input type='text' style="background: transparent;border: none; width: 230px; font-size: 12px; color:black" id='output_iphone' disabled></div>
+                                        </div>
+
+                                    </div>
+
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td>
+                                        Pushes:
+                                        <div>
+                                        
+                                        
+                                        {%for push in all_pushes%}
+                                            <div>{{push.title}}</div>
+                                        {% endfor %}
+
+                                    </div>
+
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+
+                                {% endblock %}
+                            </small>
+                            {% endblock %}
+                        </h1>
+                        {% block breadcrumbs %}
+                            {# Breadcrumb implementation left to developers #}
+                        {% endblock %}
+                    {% endblock no_heading %}
+                </section>
+            {% endblock %}
+
+            {% block content_outer %}
+            <section class="content">
+                {% block messages %}
+                    {% include 'adminlte/lib/_messages.html' %}
+                {% endblock %}
+
+                {% block content_block_wrap %}
+                    {% block content %}{% endblock %}
+                {% endblock %}
+            </section>
+            {% endblock %}
+
+        </div>
+        {% endblock content_wrapper %}
+        
+        {% block nav_footer %}
+            {% include 'adminlte/lib/_main_footer.html' %}
+        {% endblock %}
+
+    </div>
+{% endblock body %}
+
+{% block javascript %}
+{% include 'adminlte/lib/_scripts.html' %}
+{% endblock %}
+
+
+{% block extra_js %}
+<script type="text/javascript">
+    var inputBox = document.getElementById('id_title');
+
+inputBox.onkeyup = function(){
+    document.getElementById('output_android').innerHTML = inputBox.value*2;
+    document.getElementById('output_iphone').innerHTML = inputBox.value*2;
+   var val = document.getElementById('id_title').value
+  document.getElementById('output_android').value = val;
+  document.getElementById('output_iphone').value = val;
+}
+</script>>
+{% endblock %}
+
+{% block extra_foot %}{% endblock %}
+</body>
+</html>
